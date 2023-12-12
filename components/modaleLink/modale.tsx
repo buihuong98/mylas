@@ -103,6 +103,7 @@ const ModaleLink = (props: {
   // console.log("Title",title);
 
   const showDeleteConfirm =  () => {
+    props.setIsModalOpen(false);
     confirm({
       title: "Delete link?",
       icon: <ExclamationCircleFilled />,

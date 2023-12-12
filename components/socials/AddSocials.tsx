@@ -1,9 +1,16 @@
-import { Button, Modal } from "antd";
+import { Button, Modal, Select, Space } from "antd";
 import { useState } from "react";
 import "../socials/socials.scss";
 import axios from "axios";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 
-const listSocials = [
+type SocialItem = {
+  id: number;
+  icon: JSX.Element;
+  application: string;
+  addLink: string;
+};
+const listSocials: SocialItem[] = [
   {
     id: 1,
     icon: <i className="fa-solid fa-envelope"></i>,
@@ -61,26 +68,26 @@ const listSocials = [
 ];
 
 const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [linkIndexToAdd, setLinkIndexToAdd] = useState<number>();
   const [modalLinkSoialsOpen, setModalLinkSoialsOpen] = useState(false);
-  const [linkIndexSocailsToEdit, setLinkIndexSocailsToEdit] =
-    useState<number>();
+  const { confirm } = Modal;
+  const [linksocialsToEdit, setLinksocialsToEdit] = useState<number>();
   const [linkInputValue, setLinkInputValue] = useState("");
   const [errorLinkInput, setErrorLinkInput] = useState("");
+  const [appValue, setAppValue] = useState("");
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const handleChange = (value: string) => {
+    setAppValue(value);
+    console.log(value);
   };
-
-  const handleCanced = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleModalSocials = (index: number) => {
+  const appWidth = listSocials.find(
+    (listSocial) => listSocial.application === appValue
+  );
+  // console.log("appWidth", appWidth);
+  const handleModalAddLink = () => {
     setModalLinkSoialsOpen(true);
-    setLinkIndexToAdd(index);
+    setLinksocialsToEdit;
   };
+
   const handleLinkSoialsOk = () => {
     setModalLinkSoialsOpen(false);
   };
@@ -89,20 +96,18 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
     setModalLinkSoialsOpen(false);
     setLinkInputValue("");
     setErrorLinkInput("");
+    setLinksocialsToEdit(undefined);
   };
-  //    console.log("props.listUser", props.listUser.socials)
+  // console.log("props.listUser", props.listUser);
   const handleSaverLinkInput = async (e: any) => {
     e.preventDefault(); // ngăn chặn hành động mặc định của sự kiện submit(ví dụ: k làm cho trang web reload)
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
-    if (linkIndexToAdd === undefined) {
-      return;
-    }
 
     const socials = props.listUser.socials;
     socials.push({
-      id: listSocials[linkIndexToAdd].id,
-      icon: listSocials[linkIndexToAdd].icon,
-      application: listSocials[linkIndexToAdd].application,
+      id: appWidth?.id,
+      icon: appWidth?.icon?.props?.className,
+      application: appValue,
       addLink: linkInputValue,
     });
     await sendLinkDataToServer({ socials: socials }), // dữ liệu gửi lên 1 object có key là socials, value là mảng socials
@@ -114,7 +119,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
       const res = await axios.put(`/api/bio/${props.listUser?.username}`, data);
       if (res.status === 200) {
         // handleLinkSoialsCancel()
-        setIsModalOpen(false);
+
         setModalLinkSoialsOpen(false);
       } else {
         console.error("yêu cầu không thành công", res.status);
@@ -124,16 +129,35 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
     }
   };
   const handleModaleHeaderSocials = (index: number) => {
+    setLinkInputValue('props.listUser.socials[linksocialsToEdit].addLink')
     setModalLinkSoialsOpen(true);
-    setLinkIndexSocailsToEdit(index);
+    setLinksocialsToEdit(index);
   };
 
-  console.log("ModalLinkSoialsOpen", modalLinkSoialsOpen);
-  // if(linkIndexToAdd !== undefined && typeof linkIndexToAdd === "number"){
-  //   console.log(listSocials[linkIndexToAdd].application)
-  //   console.log(listSocials[linkIndexToAdd].icon)
-  // }
-  //   console.log('linkInputValue', linkInputValue)
+  const showDeleteConfirmLink = () => {
+    setModalLinkSoialsOpen(false);
+    confirm({
+      title: "Delete social?",
+      icon: <ExclamationCircleFilled />,
+      content: "Are you sure you want to delete this social?",
+      okText: "Confirm",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        console.log("OK");
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  console.log("linkIndexToEdit", linksocialsToEdit);
+  if (linksocialsToEdit !== undefined) {
+    console.log(props.listUser.socials[linksocialsToEdit].linkInputValue);
+  }
+  // console.log('lisUser', props.listUser)
+  // console.log('appWidth', appWidth)
   return (
     <div>
       <div className="mt-[48px] pb-5">SOCIALS</div>
@@ -148,7 +172,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
             }}
           >
             <div>
-              <span>
+              <span className="mr-3">
                 <i className={`${item.icon}`}></i>
               </span>
 
@@ -156,7 +180,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
             </div>
             <div>
               <span>{item.addLink}</span>
-              <span>
+              <span className="ml-3">
                 <i className="fa-solid fa-ellipsis-vertical"></i>
               </span>
             </div>
@@ -165,85 +189,64 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
       })}
 
       <Button
-        onClick={showModal}
+        onClick={handleModalAddLink}
         className="font-semibold w-[600px] mr-4 h-[48px] bg-white text-blue-600"
       >
         + Add socials
       </Button>
-      <Modal
-        footer={null}
-        title="Socials"
-        open={isModalOpen}
-        onCancel={handleCanced}
-      >
-        <hr />
-        <div className="mt-5">
-          <span>
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </span>
-          <input className="ml-2" type="text" placeholder="Search" />
-        </div>
-        <hr className="bg-blue-500 h-[2px]" />
-        {listSocials.map((item, index: any) => {
-          return (
-            <div
-              key={index}
-              className="px-3 py-2 flex border w-full justify-between mt-2"
-              onClick={() => {
-                handleModalSocials(index); // dùng hàm callback lưu index để mk biết mk đang click vào phần tử thứ mấy trong mảng
-              }}
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-xl mr-4">
-                  {/* <i className="fa-solid fa-envelope mr-3"></i> */}
-                  {item.icon}
-                </span>
-                <span>{item.application}</span>
-              </div>
-              <button className="text-blue-500">Add</button>
-            </div>
-          );
-        })}
-      </Modal>
 
       <Modal
         footer={null}
-        title={
-          linkIndexToAdd !== undefined && typeof linkIndexToAdd === "number"
-            ? listSocials[linkIndexToAdd].application
-            : null
-        }
+        title={linksocialsToEdit !== undefined ? "Edit" : "+ Add socials"}
         open={modalLinkSoialsOpen}
         onOk={handleLinkSoialsOk}
         onCancel={handleLinkSoialsCancel}
       >
         <hr />
+
+        <Select
+          value={
+            linksocialsToEdit !== undefined
+              ? props.listUser.socials[linksocialsToEdit].application
+              : null
+          }
+          style={{ width: "100%" }}
+          placeholder="Select one country"
+          onChange={handleChange}
+          options={listSocials}
+          fieldNames={{
+            label: "application",
+            value: "application",
+          }}
+          optionRender={(option) => (
+            <Space>
+              {option.data.icon}
+              {option.data.application}
+            </Space>
+          )}
+        ></Select>
         <div className="border mt-5 px-3 py-3 rounded-lg font-semibold border-rose-500">
-          {linkIndexToAdd !== undefined &&
-          typeof linkIndexToAdd === "number" ? (
-            <span>{listSocials[linkIndexToAdd].application}</span>
-          ) : null}
+          <span>
+            {linksocialsToEdit !== undefined
+              ? props.listUser.socials[linksocialsToEdit].application
+              : appWidth?.application}
+          </span>
 
           <input
             className="w-full focus-visible:outline-none"
             type="text"
-            placeholder={
-              linkIndexToAdd !== undefined && typeof linkIndexToAdd === "number"
-                ? listSocials[linkIndexToAdd].addLink
-                : ""
-            }
+            placeholder="link"
             value={linkInputValue}
             onChange={(e) => {
               const value = e.target.value;
+
               setLinkInputValue(value);
               // khi setState trong hàm onchange thì state sẽ chưa render lại nên trả về dữ liệu không đúng
               if (value.length > 0) {
                 setErrorLinkInput("");
               }
-              if (!value && typeof linkIndexToAdd === "number") {
-                setErrorLinkInput(
-                  `Please enter a valid ${listSocials[linkIndexToAdd].application} link.`
-                );
+              if (!value) {
+                setErrorLinkInput(`Please enter a valid ${appValue} link.`);
               }
               var linkPattern =
                 /^(http(s)?:\/\/)(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\.[a-zA-Z]{2,})?([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
@@ -254,6 +257,18 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
             }}
           />
         </div>
+        {linksocialsToEdit !== undefined ? (
+          <div className=" mt-5 flex justify-center">
+            <Button
+              className="border-none text-rose-400 hover:text-rose-400"
+              onClick={showDeleteConfirmLink}
+              type="dashed"
+            >
+              Remove icon
+            </Button>
+          </div>
+        ) : null}
+
         {errorLinkInput ? (
           <p className="text-rose-400">{errorLinkInput}</p>
         ) : null}

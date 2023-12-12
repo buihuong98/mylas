@@ -88,6 +88,14 @@ const DashboardLink = () => {
                   {listUser?.username}
                 </span>
               </div>
+                <div className="flex gap-2">
+              {listUser?.socials?.map((item: any, index: any) => {
+                return (<div key={index}>
+                 <span className="text-xl"><i className={`${item.icon}`}></i></span>
+                </div>)
+              })}
+              </div>
+
               {listUser?.links?.map((item: any, index: any) => {
                 return (
                   <div key={index}>
