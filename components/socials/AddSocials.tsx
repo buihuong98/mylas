@@ -72,16 +72,19 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
   const { confirm } = Modal;
   const [linksocialsToEdit, setLinksocialsToEdit] = useState<number>();
   const [linkInputValue, setLinkInputValue] = useState("");
+  const [applicationValue, setAppLicationValue] = useState("");
   const [errorLinkInput, setErrorLinkInput] = useState("");
   const [appValue, setAppValue] = useState("");
 
   const handleChange = (value: string) => {
     setAppValue(value);
     console.log(value);
+    setAppLicationValue(value);
   };
   const appWidth = listSocials.find(
     (listSocial) => listSocial.application === appValue
   );
+
   // console.log("appWidth", appWidth);
   const handleModalAddLink = () => {
     setModalLinkSoialsOpen(true);
@@ -99,17 +102,28 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
     setLinksocialsToEdit(undefined);
   };
   // console.log("props.listUser", props.listUser);
+
   const handleSaverLinkInput = async (e: any) => {
     e.preventDefault(); // ngăn chặn hành động mặc định của sự kiện submit(ví dụ: k làm cho trang web reload)
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
-
     const socials = props.listUser.socials;
-    socials.push({
-      id: appWidth?.id,
-      icon: appWidth?.icon?.props?.className,
-      application: appValue,
-      addLink: linkInputValue,
-    });
+
+    if (linksocialsToEdit === undefined) {
+      socials.push({
+        id: appWidth?.id,
+        icon: appWidth?.icon?.props?.className,
+        application: appValue,
+        addLink: linkInputValue,
+      });
+    } else {
+      for (let i = 0; i < socials.length; i++) {
+        if (linksocialsToEdit === i) {
+          socials[i].addLink = linkInputValue;
+          // console.log("đã tìm thấy cái cần sửa", socials[i]);
+        }
+      }
+    }
+
     await sendLinkDataToServer({ socials: socials }), // dữ liệu gửi lên 1 object có key là socials, value là mảng socials
       props.getUser();
   };
@@ -129,7 +143,10 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
     }
   };
   const handleModaleHeaderSocials = (index: number) => {
-    setLinkInputValue('props.listUser.socials[linksocialsToEdit].addLink')
+    // console.log("linkIndexToEdit", linksocialsToEdit);
+
+    setLinkInputValue(props.listUser.socials[index].addLink);
+    setAppLicationValue(props.listUser.socials[index].application);
     setModalLinkSoialsOpen(true);
     setLinksocialsToEdit(index);
   };
@@ -143,8 +160,13 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
       okText: "Confirm",
       okType: "danger",
       cancelText: "No",
-      onOk() {
-        console.log("OK");
+      onOk:  async() =>  {
+        const dataDelete = [...props.listUser.socials]
+        if(linksocialsToEdit !== undefined){
+          dataDelete.splice(linksocialsToEdit, 1)
+          await sendLinkDataToServer({socials: dataDelete})
+        }
+        props.getUser();
       },
       onCancel() {
         console.log("Cancel");
@@ -152,10 +174,13 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
     });
   };
 
-  console.log("linkIndexToEdit", linksocialsToEdit);
-  if (linksocialsToEdit !== undefined) {
-    console.log(props.listUser.socials[linksocialsToEdit].linkInputValue);
-  }
+  // console.log("linkIndexToEdit", linksocialsToEdit);
+  // if (linksocialsToEdit !== undefined) {
+  //   console.log(
+  //     "linkInputValue",
+  //     props.listUser.socials[linksocialsToEdit].addLink
+  //   );
+  // }
   // console.log('lisUser', props.listUser)
   // console.log('appWidth', appWidth)
   return (
@@ -205,11 +230,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
         <hr />
 
         <Select
-          value={
-            linksocialsToEdit !== undefined
-              ? props.listUser.socials[linksocialsToEdit].application
-              : null
-          }
+          value={applicationValue}
           style={{ width: "100%" }}
           placeholder="Select one country"
           onChange={handleChange}
@@ -247,12 +268,14 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
               }
               if (!value) {
                 setErrorLinkInput(`Please enter a valid ${appValue} link.`);
+                return
               }
               var linkPattern =
                 /^(http(s)?:\/\/)(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\.[a-zA-Z]{2,})?([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
               // Kiểm tra đường link
               if (value.length > 0 && !linkPattern.test(value)) {
                 setErrorLinkInput("Invalid URL");
+                return
               }
             }}
           />

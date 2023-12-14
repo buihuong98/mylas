@@ -118,7 +118,7 @@ const ModaleLink = (props: {
           dataDelete.splice(props.linkIndexToEdit, 1);
         //  console.log("số",dataDelete)
           // dùng async await trước hàm bất đồng bộ để khi dùng biến thì sẽ đợi hàm chạy xong code mới chạy tiếp
-        await sendDataBasicToServer({links: dataDelete})
+         await sendDataBasicToServer({links: dataDelete})
         
         }
         props.getUser();
