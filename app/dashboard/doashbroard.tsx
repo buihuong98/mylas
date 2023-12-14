@@ -1,24 +1,23 @@
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Button, Spin, Tabs, TabsProps } from "antd";
+import { Button, Tabs, TabsProps } from "antd";
 import axios from "axios";
 
 import { useEffect, useState } from "react";
 import "../dashboard/dashboard.scss";
-import ModaleLink from "@/components/modaleLink/modale";
-import AddSocials from "@/components/socials/AddSocials";
+
 import UsernameProfile from "@/components/profile/usernameProfile";
+import { ImageUpload } from "@/components/inputs/image-upload";
+import Links from "@/container/dashboard/Links";
 
 const Dashboard = () => {
   const [listUser, setListUser] = useState<any>();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [image, setImage] = useState("");
+  const [errorImage, setErrorImage] = useState("");
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
-  const [linkIndexToEdit, setLinkIndexToEdit] = useState<number>();
-  const [isLoading, setIsLoading] = useState(false);
-  // const [checkbox1, setCheckbox1] = useState(false);
-  // const [checkboxValue, setCheckboxValue] = useState(false)
-  // console.log('user', user)
-  
+
+  const [nameProfile, setNameProfile] = useState("");
+  const [errorNameProfile, setErrorNameProfile] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -30,17 +29,9 @@ const Dashboard = () => {
     const res = await axios.get(`/api/bio/${user?.username}`);
     // console.log("res", res);
     setListUser(res.data);
+    setNameProfile(res.data.username);
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  // console.log(listUser?.links)
-  const handleModalHeader = (index: number) => {
-    setIsModalOpen(true);
-    setLinkIndexToEdit(index);
-  };
-  
   const onChangeTab = (key: string) => {
     // console.log(key);
   };
@@ -49,7 +40,7 @@ const Dashboard = () => {
     {
       key: "1",
       label: "Links",
-      children: ``,
+      children: (<Links listUser={listUser} getUser={getUser} />),
     },
     {
       key: "2",
@@ -59,7 +50,54 @@ const Dashboard = () => {
     {
       key: "3",
       label: "Design",
-      children: "Content of Tab Pane 3",
+      children: (
+        <div className="w-[600px]">
+          <div className="mt-9 bg-white px-9 py-9 w-full">
+            <span className="text-lg font-semibold">Profile</span>
+            <div className="mt-8 flex justify-between">
+              <div className="w-[389px]">
+                <div className="bg-[#f2f0f0] border px-2 py-2">
+                  {/* {listUser.username ? ()} */}
+                  <input
+                    className="w-full bg-[#f2f0f0] focus-visible:outline-none"
+                    type="text"
+                    placeholder="Name"
+                    value={nameProfile}
+                    onChange={(e) => {
+                      setNameProfile(e.target.value);
+                      if (e.target.value.length > 0) {
+                        setErrorNameProfile("Please add your username");
+                      }
+                    }}
+                  />
+                </div>
+                {errorNameProfile && (
+                  <p className="text-rose-400">Please add your username</p>
+                )}
+                <div className="bg-[#f2f0f0] border px-2 py-2 mt-5">
+                  {/* {listUser.username ? ()} */}
+                  <input
+                    className="w-full bg-[#f2f0f0] focus-visible:outline-none"
+                    type="text"
+                    placeholder="Bio"
+                  />
+                </div>
+              </div>
+              <div>
+                <ImageUpload
+                  value={image}
+                  error={errorImage}
+                  // className="w-[115px] h-[115px] object-cover rounded-full"
+                  onChange={function (src: string): void {
+                    //chạy dòng 129 sau khi lấy đc url của ảnh, component đc render lại thì value= url ảnh, truyền vào componed con
+                    setImage(src);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
     },
     {
       key: "4",
@@ -86,7 +124,6 @@ const Dashboard = () => {
     <div className="h-[100vh]">
       <div className="flex justify-between px-[64px] h-[60px] items-center">
         <span>LOGO</span>
-        {isLoading ? <Spin /> : null}
         <div className="flex gap-4">
           <div className="flex gap-2 text-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)]">
             <span>
@@ -123,88 +160,8 @@ const Dashboard = () => {
               />
             </div>
             <hr />
-
-            <div>
-              <div className="mt-3 ">
-                <div className="flex">
-                  <div>
-                    <Button
-                      onClick={showModal}
-                      className="font-semibold w-[424.73px] mr-4 h-[48px] bg-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)] text-white"
-                    >
-                      + ADD LINK
-                    </Button>
-                    <ModaleLink
-                      linkIndexToEdit={linkIndexToEdit}
-                      listUser={listUser}
-                      isModalOpen={isModalOpen}
-                      setIsModalOpen={setIsModalOpen}
-                      getUser={getUser}
-                      setLinkIndexToEdit={setLinkIndexToEdit}
-                      isLoading={isLoading}
-                      setIsLoading={setIsLoading}
-                      // checkbox1={checkbox1}
-                      // setCheckbox1={setCheckbox1}
-                      // checkboxValue={checkboxValue}
-                      // setCheckboxValue={setCheckboxValue}
-                    />
-                  </div>
-                  <Button className="font-semibold w-[159.27px] h-[48px] text-white bg-blue-500">
-                    + ADD EMBED
-                  </Button>
-                </div>
-                <div className="mt-[24px] font-semibold">+ Add header</div>
-
-                {listUser?.links?.map((item: any, index: any) => {
-                  return (
-                    <div key={index}>
-                      <div
-                        onClick={() => {
-                          handleModalHeader(index);
-                        }}
-                        className="mt-[32px] flex justify-between items-center px-[25px] bg-white w-[600px]"
-                      >
-                        <div className="flex gap-3 justify-between items-center">
-                          {item.image ? (
-                            <img
-                              className="w-[52px] h-[52px] object-cover"
-                              src={item.image}
-                              alt="no image"
-                            />
-                          ) : null}
-
-                          <div className=" py-[20px] pr-[72px] w-[400px]">
-                            {item.title ? (
-                              <p className="font-semibold">{item.title}</p>
-                            ) : (
-                              <p className="font-semibold">
-                                {listUser?.username}
-                              </p>
-                            )}
-
-                            <span className="text-sm">{item.url}</span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="mr-3">
-                            <i className="fa-regular fa-circle-check"></i>
-                          </span>
-                          <span>0</span>
-                        </div>
-
-                        <div>
-                          <i className="fa-solid fa-ellipsis-vertical"></i>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <AddSocials listUser={listUser} getUser={getUser} />
-            </div>
           </div>
         </div>
-
       </div>
     </div>
   );

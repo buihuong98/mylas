@@ -78,7 +78,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
 
   const handleChange = (value: string) => {
     setAppValue(value);
-    console.log(value);
+    // console.log(value);
     setAppLicationValue(value);
   };
   const appWidth = listSocials.find(
