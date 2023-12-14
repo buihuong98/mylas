@@ -1,6 +1,6 @@
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Button, Spin } from "antd";
+import { Button, Spin, Tabs, TabsProps } from "antd";
 import axios from "axios";
 
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ const Dashboard = () => {
   // const [checkbox1, setCheckbox1] = useState(false);
   // const [checkboxValue, setCheckboxValue] = useState(false)
   // console.log('user', user)
+  
 
   useEffect(() => {
     if (user) {
@@ -39,7 +40,43 @@ const Dashboard = () => {
     setIsModalOpen(true);
     setLinkIndexToEdit(index);
   };
+  
+  const onChangeTab = (key: string) => {
+    // console.log(key);
+  };
 
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "Links",
+      children: ``,
+    },
+    {
+      key: "2",
+      label: "Posts",
+      children: "Content of Tab Pane 2",
+    },
+    {
+      key: "3",
+      label: "Design",
+      children: "Content of Tab Pane 3",
+    },
+    {
+      key: "4",
+      label: "Subscribers",
+      children: "Content of Tab Pane 4",
+    },
+    {
+      key: "5",
+      label: "Stats",
+      children: "Content of Tab Pane 5",
+    },
+    {
+      key: "6",
+      label: "Settings",
+      children: "Content of Tab Pane 6",
+    },
+  ];
   // if (linkIndexToEdit) {
   //   console.log("linkIndexToEdit", listUser.links[linkIndexToEdit]);
   // }
@@ -69,7 +106,6 @@ const Dashboard = () => {
       </div>
       <hr />
       <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
-        
         <div className="mt-[32px] relative">
           <div className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black rounded-3xl right-[64px] px-5">
             <UsernameProfile listUser={listUser} />
@@ -79,92 +115,96 @@ const Dashboard = () => {
         <div className="bg-[#eaeaea]">
           <div className="ml-[64px] mt-[32px]">
             <div className="flex gap-5 font-semibold">
-              <span>Links</span>
-              <span>Posts</span>
-              <span>Design</span>
-              <span>Subscribers</span>
-              <span>Stats</span>
-              <span>Settings</span>
+              <Tabs
+                defaultActiveKey="1"
+                centered
+                items={items}
+                onChange={onChangeTab}
+              />
             </div>
             <hr />
-            <div className="mt-3 ">
-              <div className="flex">
-                <div>
-                  <Button
-                    onClick={showModal}
-                    className="font-semibold w-[424.73px] mr-4 h-[48px] bg-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)] text-white"
-                  >
-                    + ADD LINK
-                  </Button>
-                  <ModaleLink
-                    linkIndexToEdit={linkIndexToEdit}
-                    listUser={listUser}
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                    getUser={getUser}
-                    setLinkIndexToEdit={setLinkIndexToEdit}
-                    isLoading={isLoading}
-                    setIsLoading={setIsLoading}
-                    // checkbox1={checkbox1}
-                    // setCheckbox1={setCheckbox1}
-                    // checkboxValue={checkboxValue}
-                    // setCheckboxValue={setCheckboxValue}
-                  />
-                </div>
-                <Button className="font-semibold w-[159.27px] h-[48px] text-white bg-blue-500">
-                  + ADD EMBED
-                </Button>
-              </div>
-              <div className="mt-[24px] font-semibold">+ Add header</div>
 
-              {listUser?.links?.map((item: any, index: any) => {
-                return (
-                  <div key={index}>
-                    <div
-                      onClick={() => {
-                        handleModalHeader(index);
-                      }}
-                      className="mt-[32px] flex justify-between items-center px-[25px] bg-white w-[600px]"
+            <div>
+              <div className="mt-3 ">
+                <div className="flex">
+                  <div>
+                    <Button
+                      onClick={showModal}
+                      className="font-semibold w-[424.73px] mr-4 h-[48px] bg-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)] text-white"
                     >
-                      <div className="flex gap-3 justify-between items-center">
-                        {item.image ? (
-                          <img
-                            className="w-[52px] h-[52px] object-cover"
-                            src={item.image}
-                            alt="no image"
-                          />
-                        ) : null}
+                      + ADD LINK
+                    </Button>
+                    <ModaleLink
+                      linkIndexToEdit={linkIndexToEdit}
+                      listUser={listUser}
+                      isModalOpen={isModalOpen}
+                      setIsModalOpen={setIsModalOpen}
+                      getUser={getUser}
+                      setLinkIndexToEdit={setLinkIndexToEdit}
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
+                      // checkbox1={checkbox1}
+                      // setCheckbox1={setCheckbox1}
+                      // checkboxValue={checkboxValue}
+                      // setCheckboxValue={setCheckboxValue}
+                    />
+                  </div>
+                  <Button className="font-semibold w-[159.27px] h-[48px] text-white bg-blue-500">
+                    + ADD EMBED
+                  </Button>
+                </div>
+                <div className="mt-[24px] font-semibold">+ Add header</div>
 
-                        <div className=" py-[20px] pr-[72px] w-[400px]">
-                          {item.title ? (
-                            <p className="font-semibold">{item.title}</p>
-                          ) : (
-                            <p className="font-semibold">
-                              {listUser?.username}
-                            </p>
-                          )}
+                {listUser?.links?.map((item: any, index: any) => {
+                  return (
+                    <div key={index}>
+                      <div
+                        onClick={() => {
+                          handleModalHeader(index);
+                        }}
+                        className="mt-[32px] flex justify-between items-center px-[25px] bg-white w-[600px]"
+                      >
+                        <div className="flex gap-3 justify-between items-center">
+                          {item.image ? (
+                            <img
+                              className="w-[52px] h-[52px] object-cover"
+                              src={item.image}
+                              alt="no image"
+                            />
+                          ) : null}
 
-                          <span className="text-sm">{item.url}</span>
+                          <div className=" py-[20px] pr-[72px] w-[400px]">
+                            {item.title ? (
+                              <p className="font-semibold">{item.title}</p>
+                            ) : (
+                              <p className="font-semibold">
+                                {listUser?.username}
+                              </p>
+                            )}
+
+                            <span className="text-sm">{item.url}</span>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="mr-3">
+                            <i className="fa-regular fa-circle-check"></i>
+                          </span>
+                          <span>0</span>
+                        </div>
+
+                        <div>
+                          <i className="fa-solid fa-ellipsis-vertical"></i>
                         </div>
                       </div>
-                      <div>
-                        <span className="mr-3">
-                          <i className="fa-regular fa-circle-check"></i>
-                        </span>
-                        <span>0</span>
-                      </div>
-
-                      <div>
-                        <i className="fa-solid fa-ellipsis-vertical"></i>
-                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+              <AddSocials listUser={listUser} getUser={getUser} />
             </div>
-            <AddSocials listUser={listUser} getUser={getUser} />
           </div>
         </div>
+
       </div>
     </div>
   );
