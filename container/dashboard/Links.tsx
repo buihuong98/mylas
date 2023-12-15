@@ -2,11 +2,13 @@ import ModaleLink from "@/components/modaleLink/modale";
 import AddSocials from "@/components/socials/AddSocials";
 import { Button } from "antd";
 import { useState } from "react";
-
+import { useUser } from "@clerk/nextjs";
 const Links = (props: {listUser: any,getUser: any }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [linkIndexToEdit, setLinkIndexToEdit] = useState<number>();
     const [isLoading, setIsLoading] = useState(false);
+    const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
+  
     const showModal = () => {
         setIsModalOpen(true);
       };
@@ -15,6 +17,7 @@ const Links = (props: {listUser: any,getUser: any }) => {
         setIsModalOpen(true);
         setLinkIndexToEdit(index);
       };
+
   return (
     <div>
       <div className="mt-3 ">
@@ -35,10 +38,7 @@ const Links = (props: {listUser: any,getUser: any }) => {
               setLinkIndexToEdit={setLinkIndexToEdit}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
-              // checkbox1={checkbox1}
-              // setCheckbox1={setCheckbox1}
-              // checkboxValue={checkboxValue}
-              // setCheckboxValue={setCheckboxValue}
+              user={user}
             />
           </div>
           <Button className="font-semibold w-[159.27px] h-[48px] text-white bg-blue-500">
@@ -90,7 +90,7 @@ const Links = (props: {listUser: any,getUser: any }) => {
           );
         })}
       </div>
-      <AddSocials listUser={props.listUser} getUser={props.getUser} />
+      <AddSocials listUser={props.listUser} getUser={props.getUser} user={user} />
     </div>
   );
 };

@@ -7,17 +7,14 @@ import { useEffect, useState } from "react";
 import "../dashboard/dashboard.scss";
 
 import UsernameProfile from "@/components/profile/usernameProfile";
-import { ImageUpload } from "@/components/inputs/image-upload";
 import Links from "@/container/dashboard/Links";
+import Design from "@/container/dashboard/Design";
 
 const Dashboard = () => {
   const [listUser, setListUser] = useState<any>();
   const [image, setImage] = useState("");
-  const [errorImage, setErrorImage] = useState("");
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
-
   const [nameProfile, setNameProfile] = useState("");
-  const [errorNameProfile, setErrorNameProfile] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -30,6 +27,7 @@ const Dashboard = () => {
     // console.log("res", res);
     setListUser(res.data);
     setNameProfile(res.data.username);
+    setImage(res.data.avatar);
   };
 
   const onChangeTab = (key: string) => {
@@ -40,7 +38,7 @@ const Dashboard = () => {
     {
       key: "1",
       label: "Links",
-      children: (<Links listUser={listUser} getUser={getUser} />),
+      children: <Links listUser={listUser} getUser={getUser} />,
     },
     {
       key: "2",
@@ -51,52 +49,15 @@ const Dashboard = () => {
       key: "3",
       label: "Design",
       children: (
-        <div className="w-[600px]">
-          <div className="mt-9 bg-white px-9 py-9 w-full">
-            <span className="text-lg font-semibold">Profile</span>
-            <div className="mt-8 flex justify-between">
-              <div className="w-[389px]">
-                <div className="bg-[#f2f0f0] border px-2 py-2">
-                  {/* {listUser.username ? ()} */}
-                  <input
-                    className="w-full bg-[#f2f0f0] focus-visible:outline-none"
-                    type="text"
-                    placeholder="Name"
-                    value={nameProfile}
-                    onChange={(e) => {
-                      setNameProfile(e.target.value);
-                      if (e.target.value.length > 0) {
-                        setErrorNameProfile("Please add your username");
-                      }
-                    }}
-                  />
-                </div>
-                {errorNameProfile && (
-                  <p className="text-rose-400">Please add your username</p>
-                )}
-                <div className="bg-[#f2f0f0] border px-2 py-2 mt-5">
-                  {/* {listUser.username ? ()} */}
-                  <input
-                    className="w-full bg-[#f2f0f0] focus-visible:outline-none"
-                    type="text"
-                    placeholder="Bio"
-                  />
-                </div>
-              </div>
-              <div>
-                <ImageUpload
-                  value={image}
-                  error={errorImage}
-                  // className="w-[115px] h-[115px] object-cover rounded-full"
-                  onChange={function (src: string): void {
-                    //chạy dòng 129 sau khi lấy đc url của ảnh, component đc render lại thì value= url ảnh, truyền vào componed con
-                    setImage(src);
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Design
+          listUser={listUser}
+          nameProfile={nameProfile}
+          setNameProfile={setNameProfile}
+          image={image}
+          setImage={setImage}
+          user= {user}
+          getUser={getUser}
+        />
       ),
     },
     {
@@ -118,7 +79,7 @@ const Dashboard = () => {
   // if (linkIndexToEdit) {
   //   console.log("linkIndexToEdit", listUser.links[linkIndexToEdit]);
   // }
-  // console.log("listUser", listUser);
+  console.log("listUser", listUser);
 
   return (
     <div className="h-[100vh]">

@@ -29,8 +29,6 @@ export const PUT = async (
   try {
     const doc = await firestore.collection(TABLE_NAME).doc(params.id)
 
-    
-
     let result = await doc.set(body, {merge: true})
 
     return NextResponse.json(result)

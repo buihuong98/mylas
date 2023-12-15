@@ -86,7 +86,7 @@ const Signup = () => {
         },
       ],
     };
-    
+
     senDataToServer(data);
   };
   const senDataToServer = async (data: any) => {
@@ -134,7 +134,6 @@ const Signup = () => {
                 onChange={function (src: string): void {
                   //chạy dòng 129 sau khi lấy đc url của ảnh, component đc render lại thì value= url ảnh, truyền vào componed con
                   setImage(src);
-                  
                 }}
               />
             </div>

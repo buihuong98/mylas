@@ -1,9 +1,11 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  //content dùng để định nghĩa các file, thư mục mà tailwind sẽ lắng nghe và tạo class khi các file bên trong sd
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './container/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {

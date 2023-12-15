@@ -4,7 +4,9 @@ import { Button, Modal } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import axios from "axios";
 
+
 const ModaleLink = (props: {
+  user: any;
   linkIndexToEdit: number | undefined;
   listUser: any;
   isModalOpen: boolean;
@@ -13,10 +15,6 @@ const ModaleLink = (props: {
   setLinkIndexToEdit: Dispatch<SetStateAction<number | undefined>>;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  // checkbox1: any;
-  // checkboxValue: boolean;
-  // setCheckboxValue: Dispatch<SetStateAction<boolean>>;
-  // setCheckbox1: any
 }) => {
   const [image, setImage] = useState("");
   const [errorImage, setErrorImage] = useState("");
@@ -25,7 +23,7 @@ const ModaleLink = (props: {
   const [url, setUrl] = useState("");
   const [errorUrl, setErrorUrl] = useState("");
   const { confirm } = Modal;
-
+ 
   const handleSave = async (e: any) => {
     e.preventDefault(); // ngăn chặn hành động mặc định của sự kiện submit(ví dụ: k làm cho trang web reload)
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
@@ -39,7 +37,6 @@ const ModaleLink = (props: {
       return;
     }
 
-   
     // Biểu thức chính quy kiểm tra đường link hợp lệ
     var linkPattern =
       /^(http(s)?:\/\/)(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\.[a-zA-Z]{2,})?([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
@@ -70,7 +67,7 @@ const ModaleLink = (props: {
 
   const sendDataBasicToServer = async (data: any) => {
     try {
-      const res = await axios.put(`/api/bio/${props.listUser?.username}`, data);
+      const res = await axios.put(`/api/bio/${props.user?.username}`, data);
       // console.log("chạy dòng 77")
       if (res.status === 200) {
         handleCancel();
@@ -102,7 +99,7 @@ const ModaleLink = (props: {
   };
   // console.log("Title",title);
 
-  const showDeleteConfirm =  () => {
+  const showDeleteConfirm = () => {
     props.setIsModalOpen(false);
     confirm({
       title: "Delete link?",
@@ -116,13 +113,12 @@ const ModaleLink = (props: {
         const dataDelete = [...props.listUser.links];
         if (props.linkIndexToEdit !== undefined) {
           dataDelete.splice(props.linkIndexToEdit, 1);
-        //  console.log("số",dataDelete)
+          //  console.log("số",dataDelete)
           // dùng async await trước hàm bất đồng bộ để khi dùng biến thì sẽ đợi hàm chạy xong code mới chạy tiếp
-         await sendDataBasicToServer({links: dataDelete})
-        
+          await sendDataBasicToServer({ links: dataDelete });
         }
         props.getUser();
-        console.log("chạy dòng 127")
+        console.log("chạy dòng 127");
       },
 
       onCancel() {

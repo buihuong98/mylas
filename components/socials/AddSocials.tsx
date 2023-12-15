@@ -9,6 +9,7 @@ type SocialItem = {
   icon: JSX.Element;
   application: string;
   addLink: string;
+  
 };
 const listSocials: SocialItem[] = [
   {
@@ -67,7 +68,7 @@ const listSocials: SocialItem[] = [
   },
 ];
 
-const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
+const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: any }) => {
   const [modalLinkSoialsOpen, setModalLinkSoialsOpen] = useState(false);
   const { confirm } = Modal;
   const [linksocialsToEdit, setLinksocialsToEdit] = useState<number>();
@@ -130,7 +131,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void> }) => {
 
   const sendLinkDataToServer = async (data: any) => {
     try {
-      const res = await axios.put(`/api/bio/${props.listUser?.username}`, data);
+      const res = await axios.put(`/api/bio/${props.user?.username}`, data);
       if (res.status === 200) {
         // handleLinkSoialsCancel()
 
