@@ -51,7 +51,7 @@ const Design = (props: {
     {
       key: "1",
       label: "Link in bio",
-      children: <LinkInBio />,
+      children: <LinkInBio getUser={props.getUser} listUser= {props.listUser} />,
     },
     {
       key: "2",

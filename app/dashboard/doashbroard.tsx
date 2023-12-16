@@ -2,13 +2,14 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Button, Tabs, TabsProps } from "antd";
 import axios from "axios";
-
 import { useEffect, useState } from "react";
 import "../dashboard/dashboard.scss";
 
 import UsernameProfile from "@/components/profile/usernameProfile";
 import Links from "@/container/dashboard/Links";
 import Design from "@/container/dashboard/Design";
+import { themes } from "@/container/themes/Linkinbio";
+import Link from "next/link";
 
 const Dashboard = () => {
   const [listUser, setListUser] = useState<any>();
@@ -79,7 +80,11 @@ const Dashboard = () => {
   // if (linkIndexToEdit) {
   //   console.log("linkIndexToEdit", listUser.links[linkIndexToEdit]);
   // }
-  console.log("listUser", listUser);
+  // if(listUser && listUser.themeID){
+  
+    // console.log("listUser", listUser?.themeID);
+  const theme = themes.find(theme => theme.id === listUser?.themeID) 
+  //  console.log('theme', theme?.background)
 
   return (
     <div className="h-[100vh]">
@@ -92,7 +97,9 @@ const Dashboard = () => {
             </span>
             <span>Upgrade</span>
           </div>
+          <Link href={`/${user?.username}`}>
           <span>bio.link/{listUser?.username}</span>
+          </Link>
           <Button>Share</Button>
           <div className="flex gap-2">
             <UserButton />
@@ -105,8 +112,8 @@ const Dashboard = () => {
       <hr />
       <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
         <div className="mt-[32px] relative">
-          <div className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black rounded-3xl right-[64px] px-5">
-            <UsernameProfile listUser={listUser} />
+          <div className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5" style={{background: theme?.background}}>
+            <UsernameProfile listUser={listUser} theme={theme} />
           </div>
         </div>
 
