@@ -20,7 +20,7 @@ const LinkInBio = (props: {listUser: any, getUser: any}) => {
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
   
   
-  console.log('listUser', props.listUser)
+  // console.log('listUser', props.listUser)
   const handleThemes = async(index: number) => {
     setBackgroundTheme(index);
 

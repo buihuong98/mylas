@@ -43,8 +43,8 @@ const UsernameProfile = (props: {
               href={item.url}
               className={`flex border rounded-full w-full relative ${
                 size === "nornal" ? "h-10" : "h-[60px]"
-              }  items-center gap-[37px] text-center justify-center`}
-              style={{color: props.theme?.textcolor, boxShadow: props.theme?.shadow}}
+              } ${props.theme && props.theme?.shadow} items-center gap-[37px] text-center justify-center`}
+              style={{color: props.theme?.textcolor}}
             >
               {item.image && (
                 <img
