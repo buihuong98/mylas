@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [image, setImage] = useState("");
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
   const [nameProfile, setNameProfile] = useState("");
+  const [bioProfile, setBioProfile] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -29,6 +30,7 @@ const Dashboard = () => {
     setListUser(res.data);
     setNameProfile(res.data.username);
     setImage(res.data.avatar);
+    setBioProfile(res.data.bioProfile)
   };
 
   const onChangeTab = (key: string) => {
@@ -54,6 +56,8 @@ const Dashboard = () => {
           listUser={listUser}
           nameProfile={nameProfile}
           setNameProfile={setNameProfile}
+          bioProfile={bioProfile}
+          setBioProfile={setBioProfile}
           image={image}
           setImage={setImage}
           user= {user}
@@ -98,7 +102,7 @@ const Dashboard = () => {
             <span>Upgrade</span>
           </div>
           <Link href={`/${user?.username}`}>
-          <span>bio.link/{listUser?.username}</span>
+          <span className="text-blue-400">bio.link/{listUser?.username}</span>
           </Link>
           <Button>Share</Button>
           <div className="flex gap-2">
