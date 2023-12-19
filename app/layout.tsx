@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import "../../mylas/public/fontawesome/css/all.css"
+import "../public/fontawesome/css/all.css"
 import { ClerkProvider } from '@clerk/nextjs'
 import RecoidContextProvider from './recoilContextProvider'
 
