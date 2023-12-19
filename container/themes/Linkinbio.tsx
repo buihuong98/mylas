@@ -1,20 +1,9 @@
+import { Themes, themes } from "@/libs/theme";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-type Themes = { background: string; type: string; id: number; textcolor: string, shadow: string };
 
-export const themes: Themes[] = [
-  { id: 1, background: "#fff", type: "Basic", textcolor: "#000", shadow: "shadow-sm", },
-  {
-    id: 2,
-    background: "#000",
-    type: "Carbon",
-    textcolor: "#fff",
-    shadow: "",
-   
-  },
-];
 
 const LinkInBio = (props: {listUser: any, getUser: any}) => {
   const [themeId, setThemeId] = useState<number>();

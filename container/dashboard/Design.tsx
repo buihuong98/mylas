@@ -110,7 +110,7 @@ const Design = (props: {
   };
   return (
     <div className="w-[600px]">
-      <div className="mt-9 bg-white px-9 py-9 w-full">
+      <div className="mt-9 bg-white border-none rounded-lg px-9 py-9 w-full">
         <span className="text-lg font-semibold">Profile</span>
         <div className="mt-8 flex justify-between">
           <div className="w-[389px]">
@@ -169,7 +169,7 @@ const Design = (props: {
         )}
       </div>
 
-      <div className="mt-9 bg-white px-9 py-9 w-full">
+      <div className="mt-9 bg-white px-9 py-9 border-none rounded-lg w-full">
         <span className="text-lg font-semibold">Themes</span>
         <div className="mt-8 flex gap-3">
           <Tabs
@@ -181,7 +181,7 @@ const Design = (props: {
         </div>
       </div>
 
-      <div className="mt-9 bg-white px-9 py-9 w-full">
+      <div className="mt-9 bg-white px-9 py-9 border-none rounded-lg w-full">
         <span className="text-lg font-semibold">
           Position to display socials
         </span>
@@ -243,7 +243,7 @@ const Design = (props: {
           </div>
         </div>
       </div>
-      <div className="px-7 mb-9 bg-white">
+      <div className="px-7 mb-9 border-none rounded-lg bg-white">
         <div className="mt-9  py-9 w-full">
           <div className="flex justify-between mb-4">
             <span className="text-lg font-semibold">Show LOGO credit</span>

@@ -1,13 +1,21 @@
 import ModaleLink from "@/components/modaleLink/modale";
 import AddSocials from "@/components/socials/AddSocials";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import Embed from "@/components/addEmbed/embed";
+import { useRecoilState } from "recoil";
+import { isLoadingState } from "@/app/dashboard/doashbroard";
 const Links = (props: { listUser: any; getUser: any }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [linkIndexToEdit, setLinkIndexToEdit] = useState<number>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useRecoilState(isLoadingState);
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
+  const [isModalOpenEmbed, setIsModalOpenEmbed] = useState(false);
+
+  const showModalEmbed = () => {
+    setIsModalOpenEmbed(true);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -20,12 +28,13 @@ const Links = (props: { listUser: any; getUser: any }) => {
 
   return (
     <div>
+       {/* <Spin spinning={loading} > */}
       <div className="mt-3 ">
         <div className="flex">
           <div>
             <Button
               onClick={showModal}
-              className="font-semibold w-[424.73px] mr-4 h-[48px] bg-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)] text-white"
+              className="font-semibold w-[424.73px] mr-4 h-[48px] hover:!text-white bg-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)] text-white"
             >
               + ADD LINK
             </Button>
@@ -36,14 +45,20 @@ const Links = (props: { listUser: any; getUser: any }) => {
               setIsModalOpen={setIsModalOpen}
               getUser={props.getUser}
               setLinkIndexToEdit={setLinkIndexToEdit}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
+              
               user={user}
             />
           </div>
-          <Button className="font-semibold w-[159.27px] h-[48px] text-white bg-blue-500">
+          <Button
+            onClick={showModalEmbed}
+            className="font-semibold w-[159.27px] hover:!text-white h-[48px] text-white bg-blue-500"
+          >
             + ADD EMBED
           </Button>
+          <Embed
+            isModalOpenEmbed={isModalOpenEmbed}
+            setIsModalOpenEmbed={setIsModalOpenEmbed}
+          />
         </div>
         <div className="mt-[24px] font-semibold">+ Add header</div>
 
@@ -54,7 +69,7 @@ const Links = (props: { listUser: any; getUser: any }) => {
                 onClick={() => {
                   handleModalHeader(index);
                 }}
-                className="mt-[32px] flex justify-between items-center px-[25px] bg-white w-[600px]"
+                className="mt-[32px] flex justify-between border-none rounded-lg items-center px-[25px] bg-white w-[600px]"
               >
                 <div className="flex gap-3 justify-between items-center">
                   {item.image ? (
@@ -99,7 +114,9 @@ const Links = (props: { listUser: any; getUser: any }) => {
           user={user}
         />
       </div>
+      {/* </Spin> */}
     </div>
+    
   );
 };
 export default Links;

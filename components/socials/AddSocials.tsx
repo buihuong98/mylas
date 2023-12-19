@@ -191,7 +191,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
         return (
           <div
             key={index}
-            className="flex justify-between bg-white text-black mb-3 px-[25px] py-3 w-[600px]"
+            className="flex justify-between bg-white border-none rounded-lg text-black mb-3 px-[25px] py-3 w-[600px]"
             onClick={() => {
               handleModaleHeaderSocials(index);
             }}

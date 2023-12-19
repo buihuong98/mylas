@@ -4,7 +4,6 @@ import { Button, Modal } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import axios from "axios";
 
-
 const ModaleLink = (props: {
   user: any;
   linkIndexToEdit: number | undefined;
@@ -13,8 +12,6 @@ const ModaleLink = (props: {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   getUser: () => Promise<void>;
   setLinkIndexToEdit: Dispatch<SetStateAction<number | undefined>>;
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [image, setImage] = useState("");
   const [errorImage, setErrorImage] = useState("");
@@ -23,7 +20,7 @@ const ModaleLink = (props: {
   const [url, setUrl] = useState("");
   const [errorUrl, setErrorUrl] = useState("");
   const { confirm } = Modal;
- 
+
   const handleSave = async (e: any) => {
     e.preventDefault(); // ngăn chặn hành động mặc định của sự kiện submit(ví dụ: k làm cho trang web reload)
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
@@ -66,6 +63,7 @@ const ModaleLink = (props: {
   // console.log("props.linkIndexToEdit", props.linkIndexToEdit);
 
   const sendDataBasicToServer = async (data: any) => {
+    
     try {
       const res = await axios.put(`/api/bio/${props.user?.username}`, data);
       // console.log("chạy dòng 77")

@@ -125,7 +125,7 @@ const Signup = () => {
 
           <span className="text-sm">{user?.username} 🎉</span>
         </div>
-        <div className="bg-white px-[32px] py-[32px] ">
+        <div className="bg-white border-none rounded-lg px-[32px] py-[32px] ">
           <div className="flex gap-6">
             <div>
               <ImageUpload

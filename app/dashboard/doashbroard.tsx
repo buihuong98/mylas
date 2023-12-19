@@ -8,9 +8,9 @@ import "../dashboard/dashboard.scss";
 import UsernameProfile from "@/components/profile/usernameProfile";
 import Links from "@/container/dashboard/Links";
 import Design from "@/container/dashboard/Design";
-import { themes } from "@/container/themes/Linkinbio";
 import Link from "next/link";
 import { atom, useRecoilState } from "recoil";
+import { themes } from "@/libs/theme";
 
 export const isLoadingState = atom({ key: "IsLoadingState", default: false });
 const textState = atom({
@@ -24,7 +24,14 @@ const Dashboard = () => {
   const [nameProfile, setNameProfile] = useState("");
   const [bioProfile, setBioProfile] = useState("");
   const [loading, setLoading] = useRecoilState(isLoadingState);
+  const [mounted, setMounted] = useState(false)
   // console.log(loading)
+  
+  useEffect(() => {
+   setMounted(true)
+
+  }, [])
+
   useEffect(() => {
     if (user) {
       getUser();
@@ -44,6 +51,7 @@ const Dashboard = () => {
 
   const onChangeTab = (key: string) => {
     // console.log(key);
+    
   };
 
   const items: TabsProps["items"] = [
@@ -55,7 +63,7 @@ const Dashboard = () => {
     {
       key: "2",
       label: "Posts",
-      children: "Content of Tab Pane 2",
+      children: "Coming soon",
     },
     {
       key: "3",
@@ -77,17 +85,17 @@ const Dashboard = () => {
     {
       key: "4",
       label: "Subscribers",
-      children: "Content of Tab Pane 4",
+      children: "Coming soon",
     },
     {
       key: "5",
       label: "Stats",
-      children: "Content of Tab Pane 5",
+      children: "Coming soon",
     },
     {
       key: "6",
       label: "Settings",
-      children: "Content of Tab Pane 6",
+      children: "Coming soon",
     },
   ];
   // if (linkIndexToEdit) {
@@ -98,9 +106,14 @@ const Dashboard = () => {
   // console.log("listUser", listUser?.themeID);
   const theme = themes.find((theme) => theme.id === listUser?.themeID);
   //  console.log('theme', theme?.background)
+  
+  if(!mounted){
+    return <Spin/>
+  }
 
   return (
     <div className="h-[100vh]">
+      <Spin spinning={loading}>
       <div className="flex justify-between px-[64px] h-[60px] items-center">
         <span>LOGO</span>
         <div className="flex gap-4">
@@ -125,28 +138,30 @@ const Dashboard = () => {
       <hr />
       <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
         <div className="mt-[32px] relative">
-            <div
-              className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
-              style={{ background: theme?.background }}
-            >
-              <UsernameProfile listUser={listUser} theme={theme}/>
-            </div>
-        </div>
-
-        <div className="bg-[#eaeaea]">
-          <div className="ml-[64px] mt-[32px]">
-            <div className="flex gap-5 font-semibold">
-              <Tabs
-                defaultActiveKey="1"
-                centered
-                items={items}
-                onChange={onChangeTab}
-              />
-            </div>
-            <hr />
+          <div
+            className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
+            style={{ background: theme?.background }}
+          >
+            <UsernameProfile listUser={listUser} theme={theme} />
           </div>
         </div>
+        {/* <Spin spinning={loading}> */}
+          <div className="bg-[#f9f9f9]">
+            <div className="ml-[64px] mt-[32px]">
+              <div className="flex gap-5 font-semibold">
+                <Tabs
+                  defaultActiveKey="1"
+                  centered
+                  items={items}
+                  onChange={onChangeTab}
+                />
+              </div>
+              <hr />
+            </div>
+          </div>
+        {/* </Spin>  */}
       </div>
+      </Spin>
     </div>
   );
 };

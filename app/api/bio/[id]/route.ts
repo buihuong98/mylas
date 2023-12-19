@@ -13,7 +13,11 @@ export const GET = async (
       .doc(params.id)
       .get()
       .then((res) => res.data())
+     if(!result){
+      return NextResponse.json({error: "Not Found"}, {status: 404})
+     }
     return NextResponse.json(result)
+    
   } catch (e: any) {
     return new Response(e, {
       status: 500,
