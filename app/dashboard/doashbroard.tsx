@@ -1,6 +1,6 @@
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Button, Tabs, TabsProps } from "antd";
+import { Button, Spin, Tabs, TabsProps } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "../dashboard/dashboard.scss";
@@ -10,14 +10,21 @@ import Links from "@/container/dashboard/Links";
 import Design from "@/container/dashboard/Design";
 import { themes } from "@/container/themes/Linkinbio";
 import Link from "next/link";
+import { atom, useRecoilState } from "recoil";
 
+export const isLoadingState = atom({ key: "IsLoadingState", default: false });
+const textState = atom({
+  key: "textState", // unique ID (with respect to other atoms/selectors)
+  default: "", // default value (aka initial value)
+});
 const Dashboard = () => {
   const [listUser, setListUser] = useState<any>();
   const [image, setImage] = useState("");
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
   const [nameProfile, setNameProfile] = useState("");
   const [bioProfile, setBioProfile] = useState("");
-
+  const [loading, setLoading] = useRecoilState(isLoadingState);
+  // console.log(loading)
   useEffect(() => {
     if (user) {
       getUser();
@@ -25,12 +32,14 @@ const Dashboard = () => {
   }, [user]);
 
   const getUser = async () => {
+    setLoading(true);
     const res = await axios.get(`/api/bio/${user?.username}`);
-    // console.log("res", res);
+    // console.log("res", res.data);
     setListUser(res.data);
     setNameProfile(res.data.username);
     setImage(res.data.avatar);
-    setBioProfile(res.data.bioProfile)
+    setBioProfile(res.data.bio);
+    setLoading(false);
   };
 
   const onChangeTab = (key: string) => {
@@ -60,7 +69,7 @@ const Dashboard = () => {
           setBioProfile={setBioProfile}
           image={image}
           setImage={setImage}
-          user= {user}
+          user={user}
           getUser={getUser}
         />
       ),
@@ -85,9 +94,9 @@ const Dashboard = () => {
   //   console.log("linkIndexToEdit", listUser.links[linkIndexToEdit]);
   // }
   // if(listUser && listUser.themeID){
-  
-    // console.log("listUser", listUser?.themeID);
-  const theme = themes.find(theme => theme.id === listUser?.themeID) 
+
+  // console.log("listUser", listUser?.themeID);
+  const theme = themes.find((theme) => theme.id === listUser?.themeID);
   //  console.log('theme', theme?.background)
 
   return (
@@ -102,7 +111,7 @@ const Dashboard = () => {
             <span>Upgrade</span>
           </div>
           <Link href={`/${user?.username}`}>
-          <span className="text-blue-400">bio.link/{listUser?.username}</span>
+            <span className="text-blue-400">bio.link/{listUser?.username}</span>
           </Link>
           <Button>Share</Button>
           <div className="flex gap-2">
@@ -116,9 +125,12 @@ const Dashboard = () => {
       <hr />
       <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
         <div className="mt-[32px] relative">
-          <div className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5" style={{background: theme?.background}}>
-            <UsernameProfile listUser={listUser} theme={theme} />
-          </div>
+            <div
+              className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
+              style={{ background: theme?.background }}
+            >
+              <UsernameProfile listUser={listUser} theme={theme}/>
+            </div>
         </div>
 
         <div className="bg-[#eaeaea]">

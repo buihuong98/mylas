@@ -134,7 +134,6 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
       const res = await axios.put(`/api/bio/${props.user?.username}`, data);
       if (res.status === 200) {
         // handleLinkSoialsCancel()
-
         setModalLinkSoialsOpen(false);
       } else {
         console.error("yêu cầu không thành công", res.status);

@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Themes = { background: string; type: string; id: number; textcolor: string, shadow: string };
 
@@ -17,19 +17,24 @@ export const themes: Themes[] = [
 ];
 
 const LinkInBio = (props: {listUser: any, getUser: any}) => {
-  const [backgroundTheme, setBackgroundTheme] = useState<number>();
+  const [themeId, setThemeId] = useState<number>();
   const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
   
-  
-  // console.log('listUser', props.listUser)
-  const handleThemes = async(index: number) => {
-    setBackgroundTheme(index);
+  useEffect (() => {
+    if(props.listUser.themeID){
+      setThemeId(props.listUser.themeID)
+    }
+  }, [props.listUser])
 
-    await axios.put(`/api/bio/${user?.username}`,{themeID : themes[index].id,})
+  // console.log('listUser', props.listUser)
+  const handleThemes = async(id: Themes['id']) => {
+    setThemeId(id);
+
+    await axios.put(`/api/bio/${user?.username}`,{themeID : id,})
     props.getUser()
   };
 
-  // console.log("backgroundTheme", backgroundTheme);
+ 
   return (
     <div className="flex gap-3 w-full mt-5">
       {themes.map((item, index) => {
@@ -37,7 +42,7 @@ const LinkInBio = (props: {listUser: any, getUser: any}) => {
           <div key={index}>
             <div
               className={`w-[169.33px] h-[212px] flex justify-center items-center ${
-                index === backgroundTheme
+                themeId === item.id
                   ? " border-[2px] border-blue-400 rounded-xl"
                   : ""
               }`}
@@ -46,7 +51,7 @@ const LinkInBio = (props: {listUser: any, getUser: any}) => {
                 className="w-[157.33px] h-[200px]  border rounded-lg"
                 style={{ background: item.background }}
                 onClick={() => {
-                  handleThemes(index);
+                  handleThemes(item.id)
                 }}
               >
                 <div className="pt-40px relative">

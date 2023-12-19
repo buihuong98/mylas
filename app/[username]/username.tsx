@@ -1,9 +1,12 @@
 "use client";
 import UsernameProfile from "@/components/profile/usernameProfile";
 import { themes } from "@/container/themes/Linkinbio";
+import { Spin } from "antd";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { isLoadingState } from "../dashboard/doashbroard";
 
 const Username = () => {
   const [data, setData] = useState<any>();
@@ -18,16 +21,19 @@ const Username = () => {
 
     setData(res.data);
   };
-
+  const [loading, setLoading] = useRecoilState(isLoadingState);
+  // console.log(loading)
   const theme = themes.find((theme) => theme.id === data?.themeID);
   // console.log("theme", theme?.background);
 
   // console.log('listUser', data?.themeID)
   return (
     <div style={{ background: theme?.background }}>
-      <div className="max-w-[680px] mx-auto h-[100vh]">
-        <UsernameProfile size="large" listUser={data} theme={theme} />
-      </div>
+      <Spin spinning={loading}>
+        <div className="max-w-[680px] mx-auto h-[100vh]">
+          <UsernameProfile size="large" listUser={data} theme={theme} />
+        </div>
+      </Spin>
     </div>
   );
 };

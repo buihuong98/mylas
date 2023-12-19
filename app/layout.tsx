@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import "../../mylas/public/fontawesome/css/all.css"
 import { ClerkProvider } from '@clerk/nextjs'
+import RecoidContextProvider from './recoilContextProvider'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -19,7 +21,11 @@ export default function RootLayout({
     <ClerkProvider afterSignInUrl='/signup-nex'>
     <html lang="en">
       
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <RecoidContextProvider>
+        {children}
+        </RecoidContextProvider>
+      </body>
     </html>
     </ClerkProvider>
   )

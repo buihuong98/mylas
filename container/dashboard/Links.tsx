@@ -3,20 +3,20 @@ import AddSocials from "@/components/socials/AddSocials";
 import { Button } from "antd";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
-const Links = (props: {listUser: any,getUser: any }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [linkIndexToEdit, setLinkIndexToEdit] = useState<number>();
-    const [isLoading, setIsLoading] = useState(false);
-    const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
-  
-    const showModal = () => {
-        setIsModalOpen(true);
-      };
-      // console.log(listUser?.links)
-      const handleModalHeader = (index: number) => {
-        setIsModalOpen(true);
-        setLinkIndexToEdit(index);
-      };
+const Links = (props: { listUser: any; getUser: any }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [linkIndexToEdit, setLinkIndexToEdit] = useState<number>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { user } = useUser(); // hook trong next/navigation dùng để lấy dữ liệu email vừa đăng nhập
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  // console.log(listUser?.links)
+  const handleModalHeader = (index: number) => {
+    setIsModalOpen(true);
+    setLinkIndexToEdit(index);
+  };
 
   return (
     <div>
@@ -69,7 +69,9 @@ const Links = (props: {listUser: any,getUser: any }) => {
                     {item.title ? (
                       <p className="font-semibold">{item.title}</p>
                     ) : (
-                      <p className="font-semibold">{props.listUser?.username}</p>
+                      <p className="font-semibold">
+                        {props.listUser?.username}
+                      </p>
                     )}
 
                     <span className="text-sm">{item.url}</span>
@@ -90,7 +92,13 @@ const Links = (props: {listUser: any,getUser: any }) => {
           );
         })}
       </div>
-      <AddSocials listUser={props.listUser} getUser={props.getUser} user={user} />
+      <div className="mb-10">
+        <AddSocials
+          listUser={props.listUser}
+          getUser={props.getUser}
+          user={user}
+        />
+      </div>
     </div>
   );
 };
