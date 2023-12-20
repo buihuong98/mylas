@@ -10,7 +10,7 @@ const UsernameProfile = (props: {
 }) => {
   const { size = "nornal" } = props;
   const [loading, setLoading] = useRecoilState(isLoadingState);
-
+  console.log("lisUser", props.listUser)
   return (
     <Spin spinning={loading} >
       <div className="w-full flex flex-col justify-between min-h-[665.99px] items-center">
@@ -32,7 +32,7 @@ const UsernameProfile = (props: {
                 alt="no Image"
               />
               <span
-                className="text-[16px] font-bold"
+                className="text-[23px] font-bold"
                 style={{ color: props.theme?.textcolor }}
               >
                 {props.listUser?.username}

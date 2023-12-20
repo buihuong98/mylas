@@ -89,7 +89,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
   // console.log("appWidth", appWidth);
   const handleModalAddLink = () => {
     setModalLinkSoialsOpen(true);
-    setLinksocialsToEdit;
+    setLinksocialsToEdit(undefined);
   };
 
   const handleLinkSoialsOk = () => {
@@ -107,15 +107,17 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
   const handleSaverLinkInput = async (e: any) => {
     e.preventDefault(); // ngăn chặn hành động mặc định của sự kiện submit(ví dụ: k làm cho trang web reload)
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
-    const socials = props.listUser.socials;
-
+    const socials = props.listUser.socials || []; // [] là giá trị mặc định dùng dấu || hoặc để nếu chưa có socials thì sẽ đổi giá trị là [] 
+     console.log(linksocialsToEdit)
     if (linksocialsToEdit === undefined) {
+      console.log('socials', socials)
       socials.push({
         id: appWidth?.id,
         icon: appWidth?.icon?.props?.className,
         application: appValue,
         addLink: linkInputValue,
       });
+     
     } else {
       for (let i = 0; i < socials.length; i++) {
         if (linksocialsToEdit === i) {
@@ -165,6 +167,8 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
         if(linksocialsToEdit !== undefined){
           dataDelete.splice(linksocialsToEdit, 1)
           await sendLinkDataToServer({socials: dataDelete})
+          setLinkInputValue("");
+          setErrorLinkInput("");
         }
         props.getUser();
       },
@@ -185,7 +189,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
   // console.log('appWidth', appWidth)
   return (
     <div>
-      <div className="mt-[48px] pb-5">SOCIALS</div>
+      <div className="mt-[48px] text-lg font-semibold pb-5">SOCIALS</div>
 
       {props.listUser?.socials?.map((item: any, index: any) => {
         return (
@@ -203,8 +207,8 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
 
               <span>{item.application}</span>
             </div>
-            <div>
-              <span>{item.addLink}</span>
+            <div className="w-[280px] flex justify-end">
+              <span className="line-clamp-1">{item.addLink}</span>
               <span className="ml-3">
                 <i className="fa-solid fa-ellipsis-vertical"></i>
               </span>
@@ -249,7 +253,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
         <div className="border mt-5 px-3 py-3 rounded-lg font-semibold border-rose-500">
           <span>
             {linksocialsToEdit !== undefined
-              ? props.listUser.socials[linksocialsToEdit].application
+              ? props.listUser?.socials[linksocialsToEdit]?.application
               : appWidth?.application}
           </span>
 

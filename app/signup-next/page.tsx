@@ -83,6 +83,8 @@ const Signup = () => {
       // lưu dữ liệu người dùng nhập lên server dùng axios.post(api và dữ liệu truyền vào muốn lưu trữ)
       username: user?.username,
       name: name,
+      iconPosition: "top",
+      themeID: 1,
       avatar: image,
       links: [
         {
@@ -90,7 +92,7 @@ const Signup = () => {
         },
       ],
     };
-
+    
     senDataToServer(data);
   };
   const senDataToServer = async (data: any) => {

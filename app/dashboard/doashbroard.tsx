@@ -57,17 +57,17 @@ const Dashboard = () => {
   const items: TabsProps["items"] = [
     {
       key: "1",
-      label: "Links",
+      label: <span className="text-base font-medium">Links</span>,
       children: <Links listUser={listUser} getUser={getUser} />,
     },
     {
       key: "2",
-      label: "Posts",
+      label: <span className="text-base font-medium">Posts</span>,
       children: "Coming soon",
     },
     {
       key: "3",
-      label: "Design",
+      label: <span className="text-base font-medium">Design</span>,
       children: (
         <Design
           listUser={listUser}
@@ -84,17 +84,17 @@ const Dashboard = () => {
     },
     {
       key: "4",
-      label: "Subscribers",
+      label: <span className="text-base font-medium">Subscribers</span>,
       children: "Coming soon",
     },
     {
       key: "5",
-      label: "Stats",
+      label: <span className="text-base font-medium">Stats</span>,
       children: "Coming soon",
     },
     {
       key: "6",
-      label: "Settings",
+      label:  <span className="text-base font-medium">Settings</span>,
       children: "Coming soon",
     },
   ];
@@ -148,7 +148,7 @@ const Dashboard = () => {
         {/* <Spin spinning={loading}> */}
           <div className="bg-[#f9f9f9]">
             <div className="ml-[64px] mt-[32px]">
-              <div className="flex gap-5 font-semibold">
+              <div className="flex gap-5">
                 <Tabs
                   defaultActiveKey="1"
                   centered

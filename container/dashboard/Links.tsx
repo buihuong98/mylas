@@ -60,7 +60,7 @@ const Links = (props: { listUser: any; getUser: any }) => {
             setIsModalOpenEmbed={setIsModalOpenEmbed}
           />
         </div>
-        <div className="mt-[24px] font-semibold">+ Add header</div>
+        <div className="mt-[24px] text-lg font-semibold">+ Add header</div>
 
         {props.listUser?.links?.map((item: any, index: any) => {
           return (
