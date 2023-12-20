@@ -28,7 +28,7 @@ const Links = (props: { listUser: any; getUser: any }) => {
 
   return (
     <div>
-       {/* <Spin spinning={loading} > */}
+      {/* <Spin spinning={loading} > */}
       <div className="mt-3 ">
         <div className="flex">
           <div>
@@ -45,7 +45,6 @@ const Links = (props: { listUser: any; getUser: any }) => {
               setIsModalOpen={setIsModalOpen}
               getUser={props.getUser}
               setLinkIndexToEdit={setLinkIndexToEdit}
-              
               user={user}
             />
           </div>
@@ -60,7 +59,7 @@ const Links = (props: { listUser: any; getUser: any }) => {
             setIsModalOpenEmbed={setIsModalOpenEmbed}
           />
         </div>
-        <div className="mt-[24px] text-lg font-semibold">+ Add header</div>
+        
 
         {props.listUser?.links?.map((item: any, index: any) => {
           return (
@@ -69,7 +68,7 @@ const Links = (props: { listUser: any; getUser: any }) => {
                 onClick={() => {
                   handleModalHeader(index);
                 }}
-                className="mt-[32px] flex justify-between border-none rounded-lg items-center px-[25px] bg-white w-[600px]"
+                className="mt-4 flex justify-between border-none rounded-lg items-center px-[25px] bg-white w-[600px]"
               >
                 <div className="flex gap-3 justify-between items-center">
                   {item.image ? (
@@ -89,18 +88,19 @@ const Links = (props: { listUser: any; getUser: any }) => {
                       </p>
                     )}
 
-                    <span className="text-sm">{item.url}</span>
+                    <span className="text-sm line-clamp-1">{item.url}</span>
                   </div>
                 </div>
-                <div>
-                  <span className="mr-3">
-                    <i className="fa-regular fa-circle-check"></i>
-                  </span>
-                  <span>0</span>
-                </div>
-
-                <div>
-                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                <div className="flex justify-between gap-4">
+                  <div>
+                    <span className="mr-3">
+                      <i className="fa-regular fa-circle-check"></i>
+                    </span>
+                    <span>0</span>
+                  </div>
+                  <div>
+                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                  </div>
                 </div>
               </div>
             </div>
@@ -116,7 +116,6 @@ const Links = (props: { listUser: any; getUser: any }) => {
       </div>
       {/* </Spin> */}
     </div>
-    
   );
 };
 export default Links;
