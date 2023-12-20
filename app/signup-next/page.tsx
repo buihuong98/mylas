@@ -59,14 +59,17 @@ const Signup = () => {
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
     if (!name) {
       setErrorName("Please enter your name");
+      return
     }
 
     if (!image) {
       setErrorImage("Please upload a profile image");
+      return
     }
 
     if (!url) {
       setErrorUrl("Please add at least one link to continue");
+      return
     }
     // Biểu thức chính quy kiểm tra đường link hợp lệ
     var linkPattern =
@@ -74,6 +77,7 @@ const Signup = () => {
     // Kiểm tra đường link
     if (url && !linkPattern.test(url)) {
       setErrorUrl("Invalid URL");
+      return
     }
     const data = {
       // lưu dữ liệu người dùng nhập lên server dùng axios.post(api và dữ liệu truyền vào muốn lưu trữ)
