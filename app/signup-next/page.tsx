@@ -15,6 +15,7 @@ const Signup = () => {
   const [errorLinkName, setErrorLinkName] = useState("");
   const [url, setUrl] = useState("");
   const [errorUrl, setErrorUrl] = useState("");
+  const [bio, setBio] = useState("");
 
   // state lưu trạng thái của button
   const [inputParirs, setInputParirs] = useState([
@@ -83,6 +84,7 @@ const Signup = () => {
       // lưu dữ liệu người dùng nhập lên server dùng axios.post(api và dữ liệu truyền vào muốn lưu trữ)
       username: user?.username,
       name: name,
+      bio: bio,
       iconPosition: "top",
       themeID: 1,
       avatar: image,
@@ -171,6 +173,9 @@ const Signup = () => {
                 className="border-none mt-3 w-[278px] h-[40px] bg-[#f0f0f0] focus-visible:outline-none px-3 py-1 text-sm"
                 type="text"
                 placeholder="bio"
+                onChange={(e) => {
+                 setBio(e.target.value) 
+                }}
               />
             </div>
           </div>

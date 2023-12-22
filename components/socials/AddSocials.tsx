@@ -9,7 +9,6 @@ type SocialItem = {
   icon: JSX.Element;
   application: string;
   addLink: string;
-  
 };
 const listSocials: SocialItem[] = [
   {
@@ -68,7 +67,11 @@ const listSocials: SocialItem[] = [
   },
 ];
 
-const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: any }) => {
+const AddSocials = (props: {
+  listUser: any;
+  getUser: () => Promise<void>;
+  user: any;
+}) => {
   const [modalLinkSoialsOpen, setModalLinkSoialsOpen] = useState(false);
   const { confirm } = Modal;
   const [linksocialsToEdit, setLinksocialsToEdit] = useState<number>();
@@ -107,17 +110,16 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
   const handleSaverLinkInput = async (e: any) => {
     e.preventDefault(); // ngăn chặn hành động mặc định của sự kiện submit(ví dụ: k làm cho trang web reload)
     // sau khi ấn nút submit nếu k có nội dung name thì setErrorName báo lỗi
-    const socials = props.listUser.socials || []; // [] là giá trị mặc định dùng dấu || hoặc để nếu chưa có socials thì sẽ đổi giá trị là [] 
-     console.log(linksocialsToEdit)
+    const socials = props.listUser.socials || []; // [] là giá trị mặc định dùng dấu || hoặc để nếu chưa có socials thì sẽ đổi giá trị là []
+    //  console.log(linksocialsToEdit)
     if (linksocialsToEdit === undefined) {
-      console.log('socials', socials)
+      console.log("socials", socials);
       socials.push({
         id: appWidth?.id,
         icon: appWidth?.icon?.props?.className,
         application: appValue,
         addLink: linkInputValue,
       });
-     
     } else {
       for (let i = 0; i < socials.length; i++) {
         if (linksocialsToEdit === i) {
@@ -129,6 +131,7 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
 
     await sendLinkDataToServer({ socials: socials }), // dữ liệu gửi lên 1 object có key là socials, value là mảng socials
       props.getUser();
+
   };
 
   const sendLinkDataToServer = async (data: any) => {
@@ -162,11 +165,11 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
       okText: "Confirm",
       okType: "danger",
       cancelText: "No",
-      onOk:  async() =>  {
-        const dataDelete = [...props.listUser.socials]
-        if(linksocialsToEdit !== undefined){
-          dataDelete.splice(linksocialsToEdit, 1)
-          await sendLinkDataToServer({socials: dataDelete})
+      onOk: async () => {
+        const dataDelete = [...props.listUser.socials];
+        if (linksocialsToEdit !== undefined) {
+          dataDelete.splice(linksocialsToEdit, 1);
+          await sendLinkDataToServer({ socials: dataDelete });
           setLinkInputValue("");
           setErrorLinkInput("");
         }
@@ -272,14 +275,14 @@ const AddSocials = (props: { listUser: any; getUser: () => Promise<void>, user: 
               }
               if (!value) {
                 setErrorLinkInput(`Please enter a valid ${appValue} link.`);
-                return
+                return;
               }
               var linkPattern =
                 /^(http(s)?:\/\/)(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\.[a-zA-Z]{2,})?([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
               // Kiểm tra đường link
               if (value.length > 0 && !linkPattern.test(value)) {
                 setErrorLinkInput("Invalid URL");
-                return
+                return;
               }
             }}
           />

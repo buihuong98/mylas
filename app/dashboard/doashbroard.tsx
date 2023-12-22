@@ -11,6 +11,7 @@ import Design from "@/container/dashboard/Design";
 import Link from "next/link";
 import { atom, useRecoilState } from "recoil";
 import { themes } from "@/libs/theme";
+import Qrcode from "@/components/qrcode/qrcode";
 
 export const isLoadingState = atom({ key: "IsLoadingState", default: false });
 const textState = atom({
@@ -24,13 +25,12 @@ const Dashboard = () => {
   const [nameProfile, setNameProfile] = useState("");
   const [bioProfile, setBioProfile] = useState("");
   const [loading, setLoading] = useRecoilState(isLoadingState);
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
   // console.log(loading)
-  
-  useEffect(() => {
-   setMounted(true)
 
-  }, [])
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -51,7 +51,6 @@ const Dashboard = () => {
 
   const onChangeTab = (key: string) => {
     // console.log(key);
-    
   };
 
   const items: TabsProps["items"] = [
@@ -94,7 +93,7 @@ const Dashboard = () => {
     },
     {
       key: "6",
-      label:  <span className="text-base font-medium">Settings</span>,
+      label: <span className="text-base font-medium">Settings</span>,
       children: "Coming soon",
     },
   ];
@@ -106,46 +105,47 @@ const Dashboard = () => {
   // console.log("listUser", listUser?.themeID);
   const theme = themes.find((theme) => theme.id === listUser?.themeID);
   //  console.log('theme', theme?.background)
-  
-  if(!mounted){
-    return <Spin/>
+
+  if (!mounted) {
+    return <Spin />;
   }
 
   return (
     <div className="h-[100vh]">
       <Spin spinning={loading}>
-      <div className="flex justify-between px-[64px] h-[60px] items-center">
-        <span>LOGO</span>
-        <div className="flex gap-4">
-          <div className="flex gap-2 text-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)]">
-            <span>
-              <i className="fa-solid fa-bolt"></i>
-            </span>
-            <span>Upgrade</span>
-          </div>
-          <Link href={`/${user?.username}`}>
-            <span className="text-blue-400">bio.link/{listUser?.username}</span>
-          </Link>
-          <Button>Share</Button>
-          <div className="flex gap-2">
-            <UserButton />
-            <span>
-              <i className="fa-solid fa-chevron-down"></i>
-            </span>
-          </div>
-        </div>
-      </div>
-      <hr />
-      <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
-        <div className="mt-[32px] relative">
-          <div
-            className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
-            style={{ background: theme?.background }}
-          >
-            <UsernameProfile listUser={listUser} theme={theme} />
+        <div className="flex justify-between px-[64px] h-[60px] items-center">
+          <span>LOGO</span>
+          <div className="flex gap-4">
+            <div className="flex gap-2 items-center text-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)]">
+              <span>
+                <i className="fa-solid fa-bolt"></i>
+              </span>
+              <span>Upgrade</span>
+            </div>
+            <div className="flex items-center">
+              <Link href={`/${user?.username}`}>
+                <span className="text-blue-400 ">
+                  bio.link/{listUser?.username}
+                </span>
+              </Link>
+            </div>
+            <Button>Share</Button>
+            <div className="flex gap-2">
+              <UserButton />
+            </div>
           </div>
         </div>
-        {/* <Spin spinning={loading}> */}
+        <hr />
+        <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
+          <div className="mt-[32px] relative">
+            <div
+              className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
+              style={{ background: theme?.background }}
+            >
+              <UsernameProfile listUser={listUser} theme={theme} />
+            </div>
+          </div>
+          {/* <Spin spinning={loading}> */}
           <div className="bg-[#f9f9f9]">
             <div className="ml-[64px] mt-[32px]">
               <div className="flex gap-5">
@@ -159,8 +159,8 @@ const Dashboard = () => {
               <hr />
             </div>
           </div>
-        {/* </Spin>  */}
-      </div>
+          {/* </Spin>  */}
+        </div>
       </Spin>
     </div>
   );

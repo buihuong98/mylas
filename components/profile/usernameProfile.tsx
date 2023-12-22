@@ -1,7 +1,9 @@
 import { isLoadingState } from "@/app/dashboard/doashbroard";
 import { Spin } from "antd";
 import Link from "next/link";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
+import Qrcode from "../qrcode/qrcode";
 
 const UsernameProfile = (props: {
   listUser: any;
@@ -10,18 +12,22 @@ const UsernameProfile = (props: {
 }) => {
   const { size = "nornal" } = props;
   const [loading, setLoading] = useRecoilState(isLoadingState);
-  console.log("lisUser", props.listUser)
+  const [isModaleShowQrcode, setIsModaleShowQrcode] = useState(false);
+  // console.log("lisUser", props.listUser)
+  const showModale = () => {
+    setIsModaleShowQrcode(true);
+  };
   return (
     <Spin spinning={loading} >
       <div className="w-full flex flex-col justify-between min-h-[665.99px] items-center">
         <div className="flex flex-col w-full h-full ">
-          <span>
-            <i
-              className="fa-solid fa-arrow-up-from-bracket w-[20px] h-[20px] ml-[18px] mt-[20px]"
+          <button className="border rounded-full w-[30px] h-[30px] mt-5 shadow-2xl">
+            <i onClick={showModale}
+              className="fa-solid fa-arrow-up-from-bracket w-[20px] h-[20px] ml-[1.5px] mt-[5px]"
               style={{ color: props.theme?.textcolor }}
             ></i>
-          </span>
-
+          </button>
+         <Qrcode listUser={props.listUser} isModaleShowQrcode={isModaleShowQrcode} setIsModaleShowQrcode={setIsModaleShowQrcode} />
           <div
             className={`flex flex-col justify-center items-center mt-7 gap-5`}
           >
