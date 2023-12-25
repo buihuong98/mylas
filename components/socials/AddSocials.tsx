@@ -222,7 +222,7 @@ const AddSocials = (props: {
 
       <Button
         onClick={handleModalAddLink}
-        className="font-semibold w-[600px] mr-4 h-[48px] bg-white text-blue-600"
+        className="font-semibold border-none w-[600px] mr-4 h-[48px] bg-white text-blue-600"
       >
         + Add socials
       </Button>
