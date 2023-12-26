@@ -112,6 +112,7 @@ const Dashboard = () => {
   return (
     <div className="h-[100vh]">
       <Spin spinning={loading}>
+        {/* dùng position: fixed để scroll trong trang web, z-10 dùng để phần scroll đè lên phần không scroll, cho cả background để che */}
         <div className="flex fixed w-full border-b-[1px] justify-between px-[64px] h-[60px] items-center z-10 bg-white">
           <span>LOGO</span>
           <div className="flex gap-4">
@@ -136,7 +137,8 @@ const Dashboard = () => {
         </div>
         
         <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
-          <div className="fixed left-[41vw] top-[12vh]">
+          {/* dùng fixed thì phải xét left và top để hiện thị phần đã fixed */}
+          <div className="fixed left-[41vw] top-[12vh]">  
             <div className="mt-[32px] relative">
               <div
                 className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
