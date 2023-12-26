@@ -146,7 +146,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/* <Spin spinning={loading}> */}
-          <div className="bg-[#f9f9f9]">
+          <div className="bg-[#f9f9f9] overflow-auto">
             <div className="ml-[64px] mt-[32px]">
               <div className="flex gap-5">
                 <Tabs
