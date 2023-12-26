@@ -76,7 +76,7 @@ const UsernameProfile = (props: {
                 <div
                   className={`flex border rounded-full w-full relative zoom-container ${size === "nornal" ? "h-10" : "h-[60px]"}  items-center gap-[37px] text-center justify-center`}
                   // style={`${{color: props.theme?.textcolor }} ${props.theme && props.theme?.shadow}`}
-                  style={{ color: props.theme?.textcolor, ...(props.theme && { shadow: props.theme.shadow }) }}
+                  style={{ color: props.theme?.textcolor,  boxShadow: props.theme?.shadow}}
                 >
                   <Link key={index} href={item.url}>
                     {item.image && (
