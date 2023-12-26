@@ -11,7 +11,6 @@ import Design from "@/container/dashboard/Design";
 import Link from "next/link";
 import { atom, useRecoilState } from "recoil";
 import { themes } from "@/libs/theme";
-import Qrcode from "@/components/qrcode/qrcode";
 
 export const isLoadingState = atom({ key: "IsLoadingState", default: false });
 const textState = atom({
@@ -113,7 +112,7 @@ const Dashboard = () => {
   return (
     <div className="h-[100vh]">
       <Spin spinning={loading}>
-        <div className="flex justify-between px-[64px] h-[60px] items-center">
+        <div className="flex fixed w-full border-b-[1px] justify-between px-[64px] h-[60px] items-center z-10 bg-white">
           <span>LOGO</span>
           <div className="flex gap-4">
             <div className="flex gap-2 items-center text-[linear-gradient(112.44deg,#ff5858_2.09%,#c058ff_75.22%)]">
@@ -135,20 +134,22 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <hr />
+        
         <div className="grid grid-cols-[700px_minmax(900px,_1fr)_100px] h-[100vh]">
-          <div className="mt-[32px] relative">
-            <div
-              className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
-              style={{ background: theme?.background }}
-            >
-              <UsernameProfile listUser={listUser} theme={theme} />
+          <div className="fixed left-[41vw] top-[12vh]">
+            <div className="mt-[32px] relative">
+              <div
+                className="w-[377.41px] h-[696.99px] absolute border-[15px] border-black  rounded-3xl right-[64px] px-5"
+                style={{ background: theme?.background }}
+              >
+                <UsernameProfile listUser={listUser} theme={theme} />
+              </div>
             </div>
           </div>
           {/* <Spin spinning={loading}> */}
-          <div className="bg-[#f9f9f9] overflow-auto">
+          <div className="bg-[#f9f9f9]">
             <div className="ml-[64px] mt-[32px]">
-              <div className="flex gap-5">
+              <div className="flex gap-5 ml-[43vw] mt-[15vh]">
                 <Tabs
                   defaultActiveKey="1"
                   centered
